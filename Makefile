@@ -9,3 +9,7 @@ setData.o:setData.cpp
 
 clean:
 	rm *.o player
+r:
+	make
+	mv player ..
+	rm *.o

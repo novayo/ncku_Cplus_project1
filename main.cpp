@@ -9,25 +9,18 @@ using namespace std;
 
 int main(void) {
     srand((u)time(NULL));
-    cout<<"5 9 4 7 1 3 C 6"<<endl;	//choosecard
+    cout<<"5 9 4 7 1 2 3 6"<<endl;
     while(1) {
-        int n;		//store the amount of FRIEND
-        int m;		//store the amount of ENEMY
+        int n;
+        int m;
         string str;
         str = input(str);
         n = count_army(str);
         m = count_enemy(str);
-//		if(n == 0){
-//			cout<<str<<endl;
-//			cout<<"----------------------\n";
-//			cout<< "n = "<<n<<endl;
-//			continue;
-//		}
         dataIn data;
         data.setStart(n,m);
         data.setValue(str);
-		data.beatJimmy(n,m);
-//        data.muchMana(n);
+        data.beatJimmy(n,m);
     }
     return 0;
 }

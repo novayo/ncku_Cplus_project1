@@ -20,9 +20,9 @@ int count_army(string str) {
     int pos=0, ans=0, end=0;
     while(1) {
         pos = str.find("FRIEND", pos);
-        if(end == 2){
+        if(end == 2) {
             return ans;
-		}
+        }
         if(pos == -1) {
             end++;
             continue;
@@ -36,9 +36,9 @@ int count_enemy(string str) {
     int pos=0, ans=0, end=0;
     while(1) {
         pos = str.find("ENEMY", pos);
-        if(end == 2){
+        if(end == 2) {
             return ans;
-		}
+        }
         if(pos == -1) {
             end++;
             continue;

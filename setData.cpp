@@ -18,98 +18,209 @@ int strtoi(char c) {
     return (int)tmp;
 }
 
-void dataIn::beatJimmy(int n, int m){
-/////	n for FRIEND long		m for ENEMY long	/////
+bool findTower(int i, string str) {
+    int pos=0;
+    switch(i) {
+    case 0:
+        if(pos = str.find("TOWER 1") + 1) {
+            return true;
+        } else {
+            return false;
+        }
+    case 1:
+        if(pos = str.find("TOWER 2") + 1) {
+            return true;
+        } else {
+            return false;
+        }
+    case 2:
+        if(pos = str.find("TOWER 3") + 1) {
+            return true;
+        } else {
+            return false;
+        }
+    case 3:
+        if(pos = str.find("TOWER 4") + 1) {
+            return true;
+        } else {
+            return false;
+        }
+    case 4:
+        if(pos = str.find("TOWER 5") + 1) {
+            return true;
+        } else {
+            return false;
+        }
+    case 5:
+        if(pos = str.find("TOWER 6") + 1) {
+            return true;
+        } else {
+            return false;
+        }
+    default:
+        cerr<<"Fuction findTower in setData.cpp -----> i has wrong value\n";
+        exit(1);
+    }
+}
 
-/////	summon 5 9	/////
-    int p9=0, p5=0;
+
+
+/////	Reform    /////
+
+
+
+void dataIn::beatJimmy(int n, int m) {
+    int ene_pos = 0;	//0 => d   -1 => u
+    for(int i=0; i<m; i++) {
+        if(enemy[i][1] <= 10) {
+            ene_pos=-1;
+            break;
+        }
+    }
+    int p9=0, p5=0, dnarmy=0, unarmy=0;
     for(int i=0; i<n; ++i) {
-        if(army[i][0] == 9){
+        if(army[i][0] == 9) {
             p9++;
-		}
-        else if(army[i][0] == 5){
+        } else if(army[i][0] == 5) {
             p5++;
-		}
-    }
-	if(p5 + p9 < 20){
-    	for(int i=0; i<4; i++) {
-       	 	if(deck[i] == 9 || deck[i] == 5)
-				summon(deck[i], 19, 1);
-		}
-	}
-
-/////	summon top	/////
-	int top=-10;
-	int x=15;
-	int y=15;
-	if(mana==10)
-		x += top;
-
-/////	summon	4 with 6/////
-	int have_4=0;
-	for(int i=0; i<4; i++) {
-		if(deck[i] == 6){
-    		for(int j=0; j<n; ++j) 
-				if(army[j][0] == 4){
-					have_4++;
-					break;
-				}
-			if(have_4>0)
-				summon(deck[i], x, y);
-		}	
-		if(deck[i] == 1 || deck[i] == 4)
-			summon(deck[i], x, y);
-	}
-
-
-
-   	int id = rand()%4;	//4 cards in my hand 
-    summon(deck[id], x+2, y);
-}
-
-void dataIn::ranDom() {
-    int x = rand()%20+1;	//x range from 1~20
-    int y = rand()%23+11;	//y range from 1~23  |  but test if put army to enemy's land
-    int cards = rand()%4;	//play how many cards in a turn
-
-    while(cards--) {
-        int id = rand()%4;	//4 cards in my hand
-        summon(deck[id], x, y);
-    }
-}
-
-void dataIn::muchMana(int n) {
-    int n9=0, n5=0;
-    for(int i=0; i<n; i++) {
-        if(army[i][0] == 9)
-            n9++;
-        else if(army[i][0] == 5)
-            n5++;
-    }
-    for(int i=0; i<4; i++) {
-        if(n9 <= 5 && n5 <= 5) {
-            if(deck[i] == 9) {
-                int x = rand()%2+10;
-                int y = 1;
-                summon(deck[i], x, y);
-            } else if(deck[i] == 5) {
-                int x = rand()%4+9;
-                int y = 1;
-                summon(deck[i], x, y);
+        }
+        if(ene_pos == -1) {
+            if(army[i][1]<=10) {
+                unarmy++;
+            }
+        } else if(ene_pos == 0) {
+            if(army[i][1]>10) {
+                if(army[i][0] == 5 || army[i][0] == 9) {
+                    if(army[i][2] > 10) {
+                        dnarmy++;
+                        continue;
+                    }
+                } else {
+                    dnarmy++;
+                }
             }
         }
     }
-    int x;	//x range from 1~20
-    if(tower[0] == 0 && tower[2] != 0)
-        x = rand()%8+1;
-    else if(tower[2] == 0 && tower[0] != 0)
-        x = rand()%8+13;
-    else
-        x = rand()%20+1;
-    int y = rand()%23+11;	//y range from 1~23  |  but test if put army to enemy's land
-    int cards = rand()%4;	//play how many cards in a turn
+    if(p5 + p9 < 20) {
+        for(int i=0; i<4; i++) {
+            if(deck[i] == 9) {
+                if(mana==10) {
+                    if(ene_pos==0) {
+                        summon(deck[i], 14, 11);
+                        return;
+                    } else if(ene_pos == -1) {
+                        summon(deck[i], 7, 11);
+                        return;
+                    }
+                }
+                summon(deck[i], 18, 1);
+                return;
+            } else if(deck[i] == 5) {
+                if(mana==10) {
+                    if(ene_pos==0) {
+                        summon(deck[i], 14, 11);
+                        return;
+                    } else if(ene_pos == -1) {
+                        summon(deck[i], 7, 11);
+                        return;
+                    }
+                }
+                summon(deck[i], 17, 1);
+                return;
+            }
+        }
+    }
+    if(ene_pos == 0) {
+        int top=-10;
+        int x=16;
+        int y=15;
+        if(mana == 10) {
+            int tmp = rand()%4+1;
+            x += tmp;
+        } else if(dnarmy>=10) {
+            x += top;
+            int tmp = rand()%3;
+            x -= tmp;
+        }
+        int have_4=0;
+        for(int i=0; i<4; i++) {
+            if(deck[i] == 6) {
+                for(int j=0; j<n; ++j)
+                    if(army[j][0] == 4) {
+                        have_4++;
+                        break;
+                    }
+                if(have_4>0) {
+                    summon(deck[i], x, y);
+                    return;
+                }
+            }
+            if(deck[i] == 4) {
+                summon(deck[i], x, y);
+                return;
+            }
+        }
+        for(int id = 0; id < 4; id++) {
+            if(dnarmy != 0) {
+                summon(deck[id], x, y);
+                return;
+            } else {
+                if(deck[id] != 2 || deck[id] != 6 || deck[id] != 3) {
+                    summon(deck[id], x, y);
+                    return;
+                }
+            }
+        }
+    } else if(ene_pos == -1) {
+        int top=10;
+        int x=6;
+        int y=15;
+        if(mana == 10) {
+            int tmp = rand()%4+1;
+            x -= tmp;
+        } else if(unarmy>=10) {
+            x += top;
+            int tmp = rand()%3;
+            x += tmp;
+        }
+        int have_4=0;
+        for(int i=0; i<4; i++) {
+            if(deck[i] == 6) {
+                for(int j=0; j<n; ++j)
+                    if(army[j][0] == 4) {
+                        have_4++;
+                        break;
+                    }
+                if(have_4>0) {
+                    summon(deck[i], x, y);
+                    return;
+                }
+            }
+            if(deck[i] == 4) {
+                summon(deck[i], x, y);
+                return;
+            }
+        }
+        for(int id = 0; id < 4; id++) {
+            if(unarmy != 0) {
+                summon(deck[id], x, y);
+                return;
+            } else {
+                if(deck[id] != 2 || deck[id] != 6 || deck[id] != 3) {
+                    summon(deck[id], x, y);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void dataIn::ranDom() {
+    int x = rand()%20+1;
+    int y = rand()%23+11;
+    int cards = rand()%4;
     while(cards--) {
-        int id = rand()%4;	//4 cards in my hand
+        int id = rand()%4;
         summon(deck[id], x, y);
     }
 }
@@ -121,7 +232,7 @@ void dataIn::setStart(int n, int m) {
     tower.assign(6,0);
     row.assign(4,0);
     army.assign(n, row);
-	enemy.assign(m, row);
+    enemy.assign(m, row);
 }
 
 void dataIn::setValue(string str) {
@@ -139,52 +250,36 @@ void dataIn::setValue(string str) {
         deck[i] = strtoi(ctmp);
     }
     for(int i=0; i<6; i++) {
-        ss >> stmp >> stmp >> itmp;
-        tower[i] = itmp;
+        if(findTower(i, str)) {
+            ss >> stmp >> stmp >> itmp;
+            tower[i] = itmp;
+        } else {
+            tower[i] = 0;
+        }
     }
-	int i=0, j=0;
-	while(true){
+    int i=0, j=0;
+    while(true) {
         ss >> stmp;
-		if(stmp == "END"){
-			break;
-		} else if(stmp == "FRIEND"){
-			ss >> ctmp >> stmp >> itmp;
-	        army[i][0] = strtoi(ctmp);
-	        army[i][1] = itmp;
-	        ss >> ctmp >> itmp >> stmp;
-  	      	army[i][2] = itmp;
-    	    ss >> itmp;
-       	 	army[i][3] = itmp;
-			i++;
-		} else if(stmp == "ENEMY"){
-			ss >> ctmp >> stmp >> itmp;
-	        enemy[j][0] = strtoi(ctmp);
-	        enemy[j][1] = itmp;
-	        ss >> ctmp >> itmp >> stmp;
-  	      	enemy[j][2] = itmp;
-    	    ss >> itmp;
-       	 	enemy[j][3] = itmp;
-			j++;
-		}
+        if(stmp == "END") {
+            break;
+        } else if(stmp == "FRIEND") {
+            ss >> ctmp >> stmp >> itmp;
+            army[i][0] = strtoi(ctmp);
+            army[i][1] = itmp;
+            ss >> ctmp >> itmp >> stmp;
+            army[i][2] = itmp;
+            ss >> itmp;
+            army[i][3] = itmp;
+            i++;
+        } else if(stmp == "ENEMY") {
+            ss >> ctmp >> stmp >> itmp;
+            enemy[j][0] = strtoi(ctmp);
+            enemy[j][1] = itmp;
+            ss >> ctmp >> itmp >> stmp;
+            enemy[j][2] = itmp;
+            ss >> itmp;
+            enemy[j][3] = itmp;
+            j++;
+        }
     }
-}
-
-int dataIn::retime() {
-    return ttime;
-}
-
-int dataIn::remana() {
-    return mana;
-}
-
-int dataIn::redeck(int i) {
-    return deck[i];
-}
-
-int dataIn::retower(int i) {
-    return tower[i];
-}
-
-int dataIn::rearmy(int i, int j) {
-    return army[i][j];
 }
