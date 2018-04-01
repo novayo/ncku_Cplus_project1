@@ -63,20 +63,7 @@ bool findTower(int i, string str) {
     }
 }
 
-
-
-/////	Reform    /////
-
-
-
-void dataIn::beatJimmy(int n, int m) {
-    int ene_pos = 0;	//0 => d   -1 => u
-    for(int i=0; i<m; i++) {
-        if(enemy[i][1] <= 10) {
-            ene_pos=-1;
-            break;
-        }
-    }
+void dataIn::beatJimmy(int n, int m, bool field) {
     int p9=0, p5=0, dnarmy=0, unarmy=0;
     for(int i=0; i<n; ++i) {
         if(army[i][0] == 9) {
@@ -84,11 +71,9 @@ void dataIn::beatJimmy(int n, int m) {
         } else if(army[i][0] == 5) {
             p5++;
         }
-        if(ene_pos == -1) {
-            if(army[i][1]<=10) {
-                unarmy++;
-            }
-        } else if(ene_pos == 0) {
+        if(army[i][1]<=10) {
+            unarmy++;
+        } else {
             if(army[i][1]>10) {
                 if(army[i][0] == 5 || army[i][0] == 9) {
                     if(army[i][2] > 10) {
@@ -105,11 +90,11 @@ void dataIn::beatJimmy(int n, int m) {
         for(int i=0; i<4; i++) {
             if(deck[i] == 9) {
                 if(mana==10) {
-                    if(ene_pos==0) {
-                        summon(deck[i], 14, 11);
-                        return;
-                    } else if(ene_pos == -1) {
+                    if(field) {
                         summon(deck[i], 7, 11);
+                        return;
+                    } else {
+                        summon(deck[i], 14, 11);
                         return;
                     }
                 }
@@ -117,11 +102,11 @@ void dataIn::beatJimmy(int n, int m) {
                 return;
             } else if(deck[i] == 5) {
                 if(mana==10) {
-                    if(ene_pos==0) {
-                        summon(deck[i], 14, 11);
-                        return;
-                    } else if(ene_pos == -1) {
+                    if(field) {
                         summon(deck[i], 7, 11);
+                        return;
+                    } else {
+                        summon(deck[i], 14, 11);
                         return;
                     }
                 }
@@ -130,86 +115,83 @@ void dataIn::beatJimmy(int n, int m) {
             }
         }
     }
-    if(ene_pos == 0) {
-        int top=-10;
-        int x=16;
-        int y=15;
-        if(mana == 10) {
-            int tmp = rand()%4+1;
-            x += tmp;
-        } else if(dnarmy>=10) {
-            x += top;
-            int tmp = rand()%3;
-            x -= tmp;
-        }
-        int have_4=0;
-        for(int i=0; i<4; i++) {
-            if(deck[i] == 6) {
-                for(int j=0; j<n; ++j)
-                    if(army[j][0] == 4) {
-                        have_4++;
-                        break;
-                    }
-                if(have_4>0) {
-                    summon(deck[i], x, y);
-                    return;
-                }
-            }
-            if(deck[i] == 4) {
-                summon(deck[i], x, y);
-                return;
-            }
-        }
-        for(int id = 0; id < 4; id++) {
-            if(dnarmy != 0) {
-                summon(deck[id], x, y);
-                return;
-            } else {
-                if(deck[id] != 2 || deck[id] != 6 || deck[id] != 3) {
-                    summon(deck[id], x, y);
-                    return;
-                }
-            }
-        }
-    } else if(ene_pos == -1) {
-        int top=10;
-        int x=6;
-        int y=15;
+    int top=-10;
+    int x=16;
+    int y=15;
+    if(field) {
+        top = 10;
+        x = 6;
+        y = 15;
         if(mana == 10) {
             int tmp = rand()%4+1;
             x -= tmp;
         } else if(unarmy>=10) {
+            /*
+            			if(tower[3]<100 || tower[5] < 100) {
+            				if(dnarmy > unarmy) {
+            					int tmp = rand()%4+1;
+            					x -= tmp;
+            				} else {
+            					x += top;
+            					int tmp = rand()%3;
+            					x += tmp;
+            				}
+            			} else {
+            */
             x += top;
             int tmp = rand()%3;
             x += tmp;
+//			}
         }
-        int have_4=0;
-        for(int i=0; i<4; i++) {
-            if(deck[i] == 6) {
-                for(int j=0; j<n; ++j)
-                    if(army[j][0] == 4) {
-                        have_4++;
-                        break;
-                    }
-                if(have_4>0) {
-                    summon(deck[i], x, y);
-                    return;
+    } else {
+        if(mana == 10) {
+            int tmp = rand()%4+1;
+            x += tmp;
+        } else if(dnarmy>=10) {
+            /*
+            			if(tower[3]<100 || tower[5] < 100) {
+            				if(unarmy > dnarmy) {
+            					int tmp = rand()%4+1;
+            					x += tmp;
+            				} else {
+            					x += top;
+            					int tmp = rand()%3;
+            					x -= tmp;
+            				}
+            			} else {
+            */
+            x += top;
+            int tmp = rand()%3;
+            x -= tmp;
+//			}
+        }
+    }
+    int is_4=0;
+    for(int i=0; i<4; i++) {
+        if(deck[i] == 6) {
+            for(int j=0; j<n; ++j)
+                if(army[j][0] == 4) {
+                    is_4++;
+                    break;
                 }
-            }
-            if(deck[i] == 4) {
+            if(is_4>0) {
                 summon(deck[i], x, y);
                 return;
             }
         }
-        for(int id = 0; id < 4; id++) {
-            if(unarmy != 0) {
+        if(deck[i] == 4) {
+            summon(deck[i], x, y);
+            return;
+        }
+    }
+    for(int id = 0; id < 4; id++) {
+        if(dnarmy != 0) {
+            summon(deck[id], x, y);
+            return;
+        } else {
+            if(deck[id] != 2 || deck[id] != 6 || deck[id] != 3) {
                 summon(deck[id], x, y);
                 return;
-            } else {
-                if(deck[id] != 2 || deck[id] != 6 || deck[id] != 3) {
-                    summon(deck[id], x, y);
-                    return;
-                }
             }
         }
     }
@@ -223,6 +205,21 @@ void dataIn::ranDom() {
         int id = rand()%4;
         summon(deck[id], x, y);
     }
+}
+
+bool dataIn::checkEnemySummon(int m) {
+    return m;
+}
+
+bool dataIn::checkField(bool tmp, int m) {
+    if(tmp) {
+        for(int i=0; i<m; i++) {
+            if(enemy[i][1] <= 10) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void dataIn::setStart(int n, int m) {

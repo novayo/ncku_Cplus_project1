@@ -9,8 +9,10 @@ class dataIn {
   public:
     void setStart(int n, int m);
     void setValue(string str);
+    bool checkField(bool tmp, int m);
+    bool checkEnemySummon(int m);
     void ranDom();
-    void beatJimmy(int n, int m);
+    void beatJimmy(int n, int m, bool field);
   private:
     u ttime;
     u mana;
