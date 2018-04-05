@@ -18,7 +18,7 @@ void dataIn::battle(int n, int m, bool field) {
         } else if(army[i][0] == 5) {
             p5++;
         }
-        /////	判斷我上面的兵的數量 unarmy是代表 上面現在有幾隻 dnarmy是代表 下面現在有幾隻
+        ///// 判斷我上面的兵的數量 unarmy是代表 上面現在有幾隻 dnarmy是代表 下面現在有幾隻
         if(army[i][1]<=10) {
             unarmy++;
         } else {
@@ -83,7 +83,7 @@ void dataIn::battle(int n, int m, bool field) {
     }
 /////	5
     for(int i=0; i<4; ++i) {
-        if(deck[i] == 5) {
+        if(deck[i] == 5) { /////////////////////////////
             for(int j=0; j<n; ++j) {
                 if(army[j][0] == 7 || army[j][0] == 4) {
                     if(army[j][2] > 23) {
@@ -110,7 +110,17 @@ void dataIn::battle(int n, int m, bool field) {
         if(deck[i] == 7 || deck[i] == 4) {
             if(field) {
                 x = 6;
-                y = 23;
+                y = 15;
+                bool is_47 = false;
+                for(int j=0; j<n; ++j) {
+                    if(army[j][2] > 23) {
+                        is_47 = true;
+                        break;
+                    }
+                }
+                if(is_47) {
+                    y = 23;
+                }
                 if(up_is_enemy) {
                     int lefty = 50;
                     for(int j=0; j<m; ++j) {
@@ -122,7 +132,17 @@ void dataIn::battle(int n, int m, bool field) {
                 }
             } else {
                 x = 16;
-                y = 23;
+                y = 15;
+                bool is_47 = false;
+                for(int j=0; j<n; ++j) {
+                    if(army[j][2] > 23) {
+                        is_47 = true;
+                        break;
+                    }
+                }
+                if(is_47) {
+                    y = 23;
+                }
                 if(down_is_enemy) {
                     int lefty = 50;
                     for(int j=0; j<m; ++j) {
@@ -149,11 +169,16 @@ void dataIn::battle(int n, int m, bool field) {
                                 summon(deck[i], x, 23);
                                 return;
                             } else {
-                                int r = rand()%2;
-                                if(r == 1) {
-                                    x = 1;
+                                if(up_is_enemy) {
+                                    int r = rand()%2;
+                                    if(r == 1) {
+                                        x = 1;
+                                    } else {
+                                        x = 7;
+                                    }
                                 } else {
-                                    x = 7;
+                                    x = rand()%4+4;
+                                    y = army[j][2] - 1;
                                 }
                             }
                             summon(deck[i], x, 5);
@@ -179,11 +204,16 @@ void dataIn::battle(int n, int m, bool field) {
                                 summon(deck[i], x, 23);
                                 return;
                             } else {
-                                int r = rand()%2;
-                                if(r == 1) {
-                                    x = 14;
+                                if(down_is_enemy) {
+                                    int r = rand()%2;
+                                    if(r == 1) {
+                                        x = 14;
+                                    } else {
+                                        x = 20;
+                                    }
                                 } else {
-                                    x = 20;
+                                    x = rand()%4+14;
+                                    y = army[j][2] - 1;
                                 }
                             }
                             summon(deck[i], x, 5);
@@ -199,9 +229,24 @@ void dataIn::battle(int n, int m, bool field) {
             return;
         }
     }
-/////	free
+    /////	free
     while(true) {
         int r = rand()%4;
+        if(tower[3] < 50 || tower [5] < 50) {
+            for(int i=0; i<4; ++i) {
+                if(deck[i] == 8) {
+                    if(field) {
+                        x = rand()%4+4;
+                        y = 23;
+                    } else {
+                        x = rand()%4+14;
+                        y = 23;
+                    }
+                }
+                summon(deck[r], x, y);
+                return;
+            }
+        }
         if(deck[r] == 8) {
             continue;
         } else {
@@ -234,6 +279,7 @@ void dataIn::battle(int n, int m, bool field) {
                     y = lefty - 1;
                 }
                 summon(deck[r], x, y);
+                return;
             }
         }
     }

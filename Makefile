@@ -1,7 +1,6 @@
 player:main.o setData.o
 	g++ -o player main.o setData.o
 	rm *.o	
-	mv player ..
 main.o:main.cpp
 	g++ -c main.cpp
 

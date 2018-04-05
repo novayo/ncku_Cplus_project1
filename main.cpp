@@ -11,7 +11,7 @@ using namespace std;
 
 int main(void) {
     srand((u)time(NULL));
-    cout<<"9 2 7 5 8 6 4 C"<<endl;
+    cout<<"9 5 7 4 8 6 2 C"<<endl;
     bool tmp=true;
     bool field=false;
     while(1) {
