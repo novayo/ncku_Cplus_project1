@@ -6,10 +6,12 @@
 #include "input.cpp"
 #include "setData.h"
 using namespace std;
+//5 9 4 7 1 2 3 6
+// 7 8 9 5 6 4 2 C
 
 int main(void) {
     srand((u)time(NULL));
-    cout<<"5 9 4 7 1 2 3 6"<<endl;
+    cout<<"9 2 7 5 8 6 4 C"<<endl;
     bool tmp=true;
     bool field=false;
     while(1) {
@@ -30,7 +32,7 @@ int main(void) {
                 tmp = false;
             }
         }
-        data.beatJimmy(n,m,field);
+        data.battle(n,m,field);
     }
     return 0;
 }

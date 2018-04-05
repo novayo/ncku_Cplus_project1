@@ -13,6 +13,7 @@ class dataIn {
     bool checkEnemySummon(int m);
     void ranDom();
     void beatJimmy(int n, int m, bool field);
+    void battle(int n, int m, bool field);
   private:
     u ttime;
     u mana;
